@@ -22,8 +22,11 @@ def post():
     if request.form['name']:
         name = request.form['name']
         detectname, detail = api.ImageCheck(name).goCheck()
-        return render_template('index.html',
-                               name=name, title=title, detectname=detectname, detail=detail)
+        if detectname:
+            return render_template('index.html',
+                                   name=name, title=title, detectname=detectname, detail=detail)
+        else:
+            return redirect(url_for('index'))
     else:
         return redirect(url_for('index'))
 
