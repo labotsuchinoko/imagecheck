@@ -9,7 +9,8 @@ import os
 import urllib
 import sys
 import StringIO
-
+import peewee
+import datetime
 
 class ImageCheck:
 
@@ -44,7 +45,8 @@ class ImageCheck:
                 self.r = urllib2.urlopen(self.aurl)
                 self.jsonData = json.loads(self.r.read())
                 self.r.close()
-                print json.dumps(self.jsonData, sort_keys=True, indent=4)
+                self.jdump = json.dumps(self.jsonData, sort_keys=True, indent=4)
+                print self.jdump
 
                 for self.list in self.jsonData['detect']:
                     cv2.rectangle(self.img,(self.list['right'],self.list['top']),(self.list['left'],self.list['bottom']),(0,255,0),3)
@@ -54,8 +56,10 @@ class ImageCheck:
                 if not os.path.exists(self.dirname):
                     os.makedirs(self.dirname)
                 self.detectimage = "detect-"+self.filename
-                cv2.imwrite(os.path.join(self.dirname, self.detectimage), self.img)
-                return os.path.join(self.dirname, self.detectimage), json.dumps(self.jsonData, sort_keys=True, indent=4)
+                self.predict_url = os.path.join(self.dirname, self.detectimage)
+                print "predict url is %s" % self.predict_url
+                cv2.imwrite(self.predict_url, self.img)
+                return os.path.join(self.dirname, self.detectimage), json.dumps(self.jsonData, sort_keys=True, indent=4), self.url
 
             except Exception as e:
                 return False,False
@@ -66,4 +70,40 @@ class ImageCheck:
 if __name__ == "__main__":
     #ch = ImageCheck(sys.argv[1])
     #ch.goCheck()
-    ImageCheck(sys.argv[1]).goCheck()
+    a = ImageCheck(sys.argv[1]).goCheck()
+#    myProduct.create(uuid = ,
+#                    result = ,
+#                    input_url = ,
+#                    predict_url = ,
+#                    predict_date = )
+
+
+
+
+db = peewee.SqliteDatabase("data.db")
+
+class Db(peewee.Model):
+    result = peewee.TextField()
+    input_url = peewee.TextField(unique=True)
+    predict_url = peewee.TextField()
+    predict_date = peewee.DateTimeField()
+
+    class Meta:
+        database = db
+
+try:
+    Db.create_table()
+except Exception as e:
+    pass
+
+try:
+    Db.create(result = a[1],
+             input_url = a[2],
+             predict_url = a[0],
+             predict_date = datetime.datetime.now())
+except Exception as e:
+    pass
+
+
+for p in Db.select():
+    print p.result, p.input_url, p.predict_url, p.predict_date

@@ -21,10 +21,10 @@ def post():
     #if request.method == 'POST':
     if request.form['name']:
         name = request.form['name']
-        detectname, detail = api.ImageCheck(name).goCheck()
+        detectname, detail, inputurl = api.ImageCheck(name).goCheck()
         if detectname:
             return render_template('index.html',
-                                   name=name, title=title, detectname=detectname, detail=detail)
+                                   name=name, title=title, detectname=detectname, detail=detail, inputurl=inputurl)
         else:
             return redirect(url_for('index'))
     else:

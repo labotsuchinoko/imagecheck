@@ -21,3 +21,9 @@
     go http://foo.bar.com:3000/
     set a image url.
     and then submit.
+
+## how to use cli mode
+
+    $ python api.py http://hogehoge.com/images.jpg
+    or
+    $ python api.py urllist.txt
