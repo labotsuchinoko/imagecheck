@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+  <!-- Form
+  ================================================== -->
+<div class="form">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12" class="img-responsive">
+          {% for list in p: %}
+          <p><img src={{list.predict_url}}></a></p>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

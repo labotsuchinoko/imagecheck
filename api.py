@@ -11,6 +11,7 @@ import sys
 import StringIO
 import peewee
 import datetime
+import ccdb
 
 class ImageCheck:
 
@@ -57,53 +58,25 @@ class ImageCheck:
                     os.makedirs(self.dirname)
                 self.detectimage = "detect-"+self.filename
                 self.predict_url = os.path.join(self.dirname, self.detectimage)
+
                 print "predict url is %s" % self.predict_url
+                print "input url is %s" % self.url
+                i = ccdb.InsertDB(self.url, self.predict_url, self.jdump)
+                i.insertData()
                 cv2.imwrite(self.predict_url, self.img)
                 return os.path.join(self.dirname, self.detectimage), json.dumps(self.jsonData, sort_keys=True, indent=4), self.url
 
             except Exception as e:
                 return False,False
 
-        if returnFilehandleFromInputStr():
-            returnFilehandleFromInputStr().close()
+        if self.returnFilehandleFromInputStr():
+            self.returnFilehandleFromInputStr().close()
 
 if __name__ == "__main__":
-    #ch = ImageCheck(sys.argv[1])
-    #ch.goCheck()
-    a = ImageCheck(sys.argv[1]).goCheck()
-#    myProduct.create(uuid = ,
-#                    result = ,
-#                    input_url = ,
-#                    predict_url = ,
-#                    predict_date = )
+    ImageCheck(sys.argv[1]).goCheck()
+    for p in ccdb.PredictDb.select():
+        print p.result, p.input_url, p.predict_url, p.predict_date
 
-
-
-
-db = peewee.SqliteDatabase("data.db")
-
-class Db(peewee.Model):
-    result = peewee.TextField()
-    input_url = peewee.TextField(unique=True)
-    predict_url = peewee.TextField()
-    predict_date = peewee.DateTimeField()
-
-    class Meta:
-        database = db
-
-try:
-    Db.create_table()
-except Exception as e:
-    pass
-
-try:
-    Db.create(result = a[1],
-             input_url = a[2],
-             predict_url = a[0],
-             predict_date = datetime.datetime.now())
-except Exception as e:
-    pass
-
-
-for p in Db.select():
-    print p.result, p.input_url, p.predict_url, p.predict_date
+#def viewList():
+#    for p in ccdb.PredictDb.select():
+#        print p.result, p.input_url, p.predict_url, p.predict_date
