@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 import api
 
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
 
 def picked_up():
     messages = "image check"
@@ -21,10 +22,11 @@ def post():
     #if request.method == 'POST':
     if request.form['name']:
         name = request.form['name']
+        model = request.form['model']
         detectname, detail, inputurl = api.ImageCheck(name).goCheck()
         if detectname:
             return render_template('index.html',
-                                   name=name, title=title, detectname=detectname, detail=detail, inputurl=inputurl)
+                                   model=model, name=name, title=title, detectname=detectname, detail=detail, inputurl=inputurl)
         else:
             return redirect(url_for('index'))
     else:
@@ -42,4 +44,4 @@ def dblist():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=3001)
