@@ -1,16 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
-  <!-- Form
-  ================================================== -->
-<div class="form">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12" class="img-responsive">
-          {% for list in p: %}
-          <p><img src={{list.predict_url}}></a></p>
-          {% endfor %}
-      </div>
-    </div>
-  </div>
+<div id="grid">
+    <ul>
+        {% for list in p: %} 
+           <li class="item">
+               <a href="#{{list.predict_url}}"><img src={{list.predict_url}}></a>
+               <a id="{{list.predict_url}}" href="#close" class="lb"><img src={{list.predict_url}}><pre>{{list.result}}</pre></a>
+           </li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}

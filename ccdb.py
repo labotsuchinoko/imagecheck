@@ -13,11 +13,12 @@ class PredictDb(BaseModel):
     predict_url = peewee.TextField()
     predict_date = peewee.DateTimeField()
 
-try:
-    PredictDb.create_table()
-except Exception as e:
-    print e
-    pass
+def createTable():
+    try:
+        PredictDb.create_table()
+    except Exception as e:
+        print "create table error is "+str(e)
+        pass
 
 class InsertDB:
 
@@ -34,7 +35,7 @@ class InsertDB:
                             predict_date = datetime.datetime.now())
 
         except Exception as e:
-            print e
+            print "insertdata error is "+str(e)
             pass
 
 #print len(ccdb.PredictDb.select())

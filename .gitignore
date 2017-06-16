@@ -1,5 +1,8 @@
+*.org
 *.pyc
 *.back
 *.jpg
 *test.py
 *.db
+*.png
+*.jpeg

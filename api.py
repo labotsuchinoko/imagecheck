@@ -48,7 +48,6 @@ class ImageCheck:
                 self.r.close()
                 self.jdump = json.dumps(self.jsonData, sort_keys=True, indent=4)
                 print self.jdump
-
                 for self.list in self.jsonData['detect']:
                     cv2.rectangle(self.img,(self.list['right'],self.list['top']),(self.list['left'],self.list['bottom']),(0,255,0),3)
                     cv2.putText(self.img,self.list['class'],(self.list['left'],self.list['top']-10),cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255),2)
@@ -61,21 +60,21 @@ class ImageCheck:
 
                 print "predict url is %s" % self.predict_url
                 print "input url is %s" % self.url
-                i = ccdb.InsertDB(self.url, self.predict_url, self.jdump)
-                i.insertData()
-                cv2.imwrite(self.predict_url, self.img)
+                if "messege" not in self.jdump:
+                    if cv2.imwrite(self.predict_url, self.img):
+                        i = ccdb.InsertDB(self.url, self.predict_url, self.jdump)
+                        i.insertData()
                 return os.path.join(self.dirname, self.detectimage), json.dumps(self.jsonData, sort_keys=True, indent=4), self.url
-
             except Exception as e:
-                return False,False
+                return False,False,False
 
         if self.returnFilehandleFromInputStr():
             self.returnFilehandleFromInputStr().close()
 
 if __name__ == "__main__":
     ImageCheck(sys.argv[1]).goCheck()
-    for p in ccdb.PredictDb.select():
-        print p.result, p.input_url, p.predict_url, p.predict_date
+    #for p in ccdb.PredictDb.select():
+    #    print p.result, p.input_url, p.predict_url, p.predict_date
 
 #def viewList():
 #    for p in ccdb.PredictDb.select():
