@@ -1,9 +1,10 @@
 server {
-    listen 3000;
+    listen 3001;
     server_name 0.0.0.0;
 
     location / {
         include proxy_params;
-        proxy_pass http://localhost:3001;
+        #proxy_pass http://localhost:3000;
+        proxy_pass http://unix:flaskapp.sock;
     }
 }
