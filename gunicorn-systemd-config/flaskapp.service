@@ -1,0 +1,14 @@
+[Unit]
+Description=flaskapp
+After=network.target
+
+[Service]
+User=tsuchinoko
+Group=tsuchinoko
+Restart=on-failure
+WorkingDirectory=/home/tsuchinoko/miniconda2/envs/py27-anaconda/imagecheck
+Environment="PATH=/home/tsuchinoko/miniconda2/envs/py27-anaconda/bin"
+ExecStart=/home/tsuchinoko/miniconda2/envs/py27-anaconda/bin/gunicorn -w 3 -b 0.0.0.0:3001 wsgi:app
+
+[Install]
+WantedBy=multi-user.target
