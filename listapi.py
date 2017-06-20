@@ -32,6 +32,7 @@ def returnDownloadImageCV2(url):
 def goCheck(input_str):
     fh = returnFilehandleFromInputStr(input_str)
     dirname = "static/images/"
+    model = "a_b_pu_model_v1"
     checklist = []
     if not os.path.exists(dirname):
         os.makedirs(dirname)
@@ -46,13 +47,23 @@ def goCheck(input_str):
         r.close()
         jdump = json.dumps(jsonData, sort_keys=True, indent=4)
         if 'message' not in jsonData:
+            count = 0
+            prob = []
             for list in jsonData['detect']:
                 cv2.rectangle(img,(list['right'],list['top']),(list['left'],list['bottom']),(0,255,0),3)
                 cv2.putText(img,list['class'],(list['left'],list['top']-10),cv2.FONT_HERSHEY_SIMPLEX, 1,(0, 0, 255),2)
+                count+=1
+                prob.append(list['prob'])
+            if prob:
+                mx = max(prob)
+            else:
+                mx = 0
+            jsonData['prob_max'] = mx
+            jsonData['breast_count'] = count
             detectimage = "detect-"+filename
             predict_url = os.path.join(dirname, detectimage)
             cv2.imwrite(predict_url.strip(), img)
-            i = ccdb.InsertDB(url, predict_url, jdump)
+            i = ccdb.InsertDB(url, predict_url, jdump, model)
             i.insertData()
             #return os.path.join(dirname, detectimage), json.dumps(jsonData, sort_keys=True, indent=4), url
             checklist.append([os.path.join(dirname, detectimage), json.dumps(jsonData, sort_keys=True, indent=4), url])
