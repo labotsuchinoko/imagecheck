@@ -46,7 +46,7 @@
     set a image url.
     and then submit.
 
-## how to serve flask application gunicorn with nginx on 3001
+## how to serve flask application gunicorn on local socket with nginx on 3001
 
     $ sudo apt-get install nginx
     $ cd ~/miniconda2/envs/py27-anaconda/imagecheck
@@ -55,6 +55,28 @@
     ExecStart=/home/tsuchinoko/miniconda2/envs/py27-anaconda/bin/gunicorn -w 3 -b unix:flaskapp.sock wsgi:app
     $ sudo cp nginx-config/flaskapp /etc/nginx/sites-available/
     $ sudo ln -s /etc/nginx/sites-available/flaskapp /etc/nginx/sites-enabled
+    $ sudo vi /etc/nginx/sites-available/flaskapp
+    #proxy_pass http://0.0.0.0:3000;
+    proxy_pass http://unix:flaskapp.sock;
+    $ sudo nginx -t
+    $ sudo systemctl restart nginx
+
+    go http://this-host:3001/ using browser.
+    set a image url.
+    and then submit.
+
+## how to serve flask application gunicorn on 3000 with nginx on 3001
+
+    $ sudo apt-get install nginx
+    $ cd ~/miniconda2/envs/py27-anaconda/imagecheck
+    $ vi nginx-config/flaskapp
+    ExecStart=/home/tsuchinoko/miniconda2/envs/py27-anaconda/bin/gunicorn -w 3 -b 0.0.0.0:3000 wsgi:app
+    #ExecStart=/home/tsuchinoko/miniconda2/envs/py27-anaconda/bin/gunicorn -w 3 -b unix:flaskapp.sock wsgi:app
+    $ sudo cp nginx-config/flaskapp /etc/nginx/sites-available/
+    $ sudo ln -s /etc/nginx/sites-available/flaskapp /etc/nginx/sites-enabled
+    $ sudo vi /etc/nginx/sites-available/flaskapp
+    proxy_pass http://0.0.0.0:3000;
+    #proxy_pass http://unix:flaskapp.sock;
     $ sudo nginx -t
     $ sudo systemctl restart nginx
 
