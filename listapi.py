@@ -45,7 +45,7 @@ def goCheck(input_str):
         r = urllib2.urlopen(aurl)
         jsonData = json.loads(r.read())
         r.close()
-        jdump = json.dumps(jsonData, sort_keys=True, indent=4)
+        #jdump = json.dumps(jsonData, sort_keys=True, indent=4)
         if 'message' not in jsonData:
             count = 0
             prob = []
@@ -60,6 +60,7 @@ def goCheck(input_str):
                 mx = 0
             jsonData['prob_max'] = mx
             jsonData['breast_count'] = count
+            jdump = json.dumps(jsonData, sort_keys=True, indent=4)
             detectimage = "detect-"+filename
             predict_url = os.path.join(dirname, detectimage)
             cv2.imwrite(predict_url.strip(), img)
