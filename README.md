@@ -30,7 +30,7 @@
     set a image url.
     and then submit.
 
-## how to serve flask application gunicorn without nginx on 3001
+## how to serve flask application gunicorn on 3001 without nginx
 
     $ source activate py27-anaconda
     $ cd ~/miniconda2/envs/py27-anaconda/imagecheck
