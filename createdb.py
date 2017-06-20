@@ -11,6 +11,7 @@ class PredictDb(BaseModel):
     result = peewee.TextField()
     input_url = peewee.TextField(unique=True)
     predict_url = peewee.TextField()
+    model = peewee.TextField()
     predict_date = peewee.DateTimeField()
 
 def createTable():

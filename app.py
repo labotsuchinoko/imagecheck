@@ -1,6 +1,7 @@
 # coding: utf-8
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import api
+import json
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -23,7 +24,7 @@ def post():
     if request.form['name']:
         name = request.form['name']
         model = request.form['model']
-        detectname, detail, inputurl = api.ImageCheck(name).goCheck()
+        detectname, detail, inputurl = api.ImageCheck(name,model).goCheck()
         if detectname:
             return render_template('index.html',
                                    model=model, name=name, title=title, detectname=detectname, detail=detail, inputurl=inputurl)
@@ -31,10 +32,6 @@ def post():
             return redirect(url_for('index'))
     else:
         return redirect(url_for('index'))
-
-@app.route('/test')
-def test():
-    return render_template('test.html')
 
 @app.route('/dblist')
 def dblist():
