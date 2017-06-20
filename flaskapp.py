@@ -10,8 +10,8 @@ def picked_up():
     messages = "image check"
     return messages
 
-@app.route('/')
-def index():
+@app.route('/check')
+def check():
     title = "check image url"
     message = picked_up()
     return render_template('index.html',
@@ -33,8 +33,8 @@ def post():
     else:
         return redirect(url_for('index'))
 
-@app.route('/dblist')
-def dblist():
+@app.route('/')
+def index():
     title = "checked list"
     p = api.ccdb.PredictDb.select()
     return render_template('dblist.html', p=p)
