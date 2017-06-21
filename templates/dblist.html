@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
-<div id="grid">
+<div class="container">
+ <div class="row">
+  <div id="grid">
     <ul>
         {% for list in p: %} 
            <li class="item">
@@ -9,5 +11,7 @@
            </li>
         {% endfor %}
     </ul>
+  </div>
+ </div>
 </div>
 {% endblock %}

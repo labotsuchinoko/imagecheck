@@ -39,6 +39,7 @@ def index():
     p = api.ccdb.PredictDb.select()
     return render_template('dblist.html', p=p)
 
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=3001)

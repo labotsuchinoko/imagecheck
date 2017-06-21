@@ -30,7 +30,7 @@
     set a image url.
     and then submit.
 
-## how to serve flask application gunicorn on 3001 without nginx
+## how to serve flask application and gunicorn wsgi on 3001 without nginx proxy
 
     $ source activate py27-anaconda
     $ cd ~/miniconda2/envs/py27-anaconda/imagecheck
@@ -46,7 +46,7 @@
     set a image url.
     and then submit.
 
-## how to serve flask application gunicorn on local socket with nginx on 3001
+## how to serve flask application and unicorn wsgi on local socket with nginx proxy on 3001
 
     $ sudo apt-get install nginx
     $ cd ~/miniconda2/envs/py27-anaconda/imagecheck
@@ -65,7 +65,7 @@
     set a image url.
     and then submit.
 
-## how to serve flask application gunicorn on 3000 with nginx on 3001
+## how to serve flask application and gunicorn wsgi on 3000 with nginx proxy on 3001
 
     $ sudo apt-get install nginx
     $ cd ~/miniconda2/envs/py27-anaconda/imagecheck
